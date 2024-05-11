@@ -138,4 +138,8 @@
   @media (min-width: breakpoint.$desktop) {
     display: flex;
   }
+
+  &.toRight {
+    transform: rotate(180deg);
+  }
 }
