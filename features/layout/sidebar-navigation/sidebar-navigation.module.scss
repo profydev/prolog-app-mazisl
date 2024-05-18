@@ -23,6 +23,12 @@
         width: 1.4375rem;
       }
     }
+
+    @media (max-width: breakpoint.$desktop) {
+      .logo {
+        content: url("/icons/logo-large.svg");
+      }
+    }
   }
 }
 
@@ -49,7 +55,7 @@
 }
 
 .logo {
-  width: 7.375rem;
+  width: 5.375rem;
 
   @media (min-width: breakpoint.$desktop) {
     margin: space.$s0 space.$s4;
