@@ -9,20 +9,39 @@
   justify-content: space-between;
   align-items: center;
   background: white;
+  position: relative;
 }
 
 .navLinks {
   display: flex;
   gap: 10px;
+
+  a {
+    text-decoration: none;
+    color: #3b3636;
+    padding: 0 10px;
+
+    &.dashboardLinkMobile {
+      text-decoration: none;
+      color: white;
+      background-color: rgb(175 8 226);
+      padding: 0.6rem 0.8rem;
+      border-radius: 0.5rem;
+      font: font.$text-sm-semibold;
+    }
+  }
 }
 
-.navLinks a {
-  text-decoration: none;
-  color: #3b3636;
-  padding: 0 10px;
+.hamburger,
+.dashboardLinkMobile {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
-.dashboardLink {
+.dashboardLinkDesktop {
   text-decoration: none;
   color: white;
   background-color: rgb(175 8 226);
@@ -44,5 +63,36 @@
 
   &:hover {
     background: #6941c6;
+  }
+}
+
+@media (width <= 725px) {
+  .navLinks {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    background: white;
+    box-shadow: 0 4px 6px rgb(0 0 0 / 10%);
+  }
+
+  .navLinks.open {
+    display: flex;
+    padding: 2em;
+  }
+
+  .dashboardLinkDesktop {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .dashboardLinkMobile {
+    display: block;
+    margin-top: 10em;
+    text-align: center;
   }
 }
