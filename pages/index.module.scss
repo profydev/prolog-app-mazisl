@@ -42,6 +42,26 @@
   font: font.$text-sm-semibold;
 }
 
+.navLinks {
+  display: flex;
+  gap: 10px;
+}
+
+.navLinks a {
+  text-decoration: none;
+  color: #3b3636;
+  padding: 0 10px;
+}
+
+.dashboardLink {
+  text-decoration: none;
+  color: white;
+  background-color: rgb(175 8 226);
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.5rem;
+  font: font.$text-sm-semibold;
+}
+
 .contactButton {
   position: absolute;
   bottom: 2.5rem;
