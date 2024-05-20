@@ -9,6 +9,7 @@
   justify-content: space-between;
   align-items: center;
   background: white;
+  position: relative;
 }
 
 .navLinks {
@@ -22,7 +23,17 @@
   padding: 0 10px;
 }
 
-.dashboardLink {
+.hamburger,
+.dashboardLinkMobile {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.navLinks a.dashboardLinkMobile,
+.dashboardLinkDesktop {
   text-decoration: none;
   color: white;
   background-color: rgb(175 8 226);
@@ -44,5 +55,36 @@
 
   &:hover {
     background: #6941c6;
+  }
+}
+
+@media (width <= 725px) {
+  .navLinks {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    background: white;
+    box-shadow: 0 4px 6px rgb(0 0 0 / 10%);
+  }
+
+  .navLinks.open {
+    display: flex;
+    padding: 2em;
+  }
+
+  .dashboardLinkDesktop {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .dashboardLinkMobile {
+    display: block;
+    margin-top: 10em;
+    text-align: center;
   }
 }
