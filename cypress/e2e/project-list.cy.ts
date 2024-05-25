@@ -1,5 +1,13 @@
 import capitalize from "lodash/capitalize";
 import mockProjects from "../fixtures/projects.json";
+import { ProjectStatus } from "@api/projects.types";
+
+// Mapping for status display text
+const statusText: { [key in ProjectStatus]: string } = {
+  [ProjectStatus.info]: "Stable",
+  [ProjectStatus.warning]: "Warning",
+  [ProjectStatus.error]: "Critical",
+};
 
 describe("Project List", () => {
   beforeEach(() => {
@@ -28,11 +36,25 @@ describe("Project List", () => {
         .find("li")
         .each(($el, index) => {
           // check that project data is rendered
-          cy.wrap($el).contains(mockProjects[index].name);
+          // cy.wrap($el).contains(mockProjects[index].name);
+          // cy.wrap($el).contains(languageNames[index]);
+          // cy.wrap($el).contains(mockProjects[index].numIssues);
+          // cy.wrap($el).contains(mockProjects[index].numEvents24h);
+          // cy.wrap($el).contains(capitalize(mockProjects[index].status));
+
+          const project = mockProjects[index];
+
+          // check that project data is rendered
+          cy.wrap($el).contains(project.name);
           cy.wrap($el).contains(languageNames[index]);
-          cy.wrap($el).contains(mockProjects[index].numIssues);
-          cy.wrap($el).contains(mockProjects[index].numEvents24h);
-          cy.wrap($el).contains(capitalize(mockProjects[index].status));
+          cy.wrap($el).contains(project.numIssues);
+          cy.wrap($el).contains(project.numEvents24h);
+
+          // Check for the correct status text
+          const expectedStatusText =
+            statusText[project.status as ProjectStatus];
+          cy.wrap($el).contains(capitalize(expectedStatusText));
+
           cy.wrap($el)
             .find("a")
             .should("have.attr", "href", "/dashboard/issues");
