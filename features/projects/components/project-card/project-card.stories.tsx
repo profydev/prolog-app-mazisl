@@ -33,7 +33,7 @@ Default.args = {
     language: ProjectLanguage.react,
     numIssues: 420,
     numEvents24h: 721,
-    status: ProjectStatus.critical,
+    status: ProjectStatus.error,
   },
 };
 Default.parameters = {
