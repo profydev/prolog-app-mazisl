@@ -4,7 +4,7 @@
 .list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  grid-gap: space.$s6;
+  grid-gap: space.$s5;
 
   /* reset list styles */
   list-style: none;
