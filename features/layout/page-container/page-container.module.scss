@@ -21,7 +21,7 @@
 .contentContainer {
   min-height: calc(100vh - 2 * space.$s8 - misc.$header-height);
   margin-top: misc.$header-height;
-  padding: space.$s8 space.$s3;
+  padding: space.$s4 space.$s3;
   background: white;
 
   @media (min-width: breakpoint.$desktop) {
@@ -33,13 +33,13 @@
 }
 
 .title {
-  margin: space.$s0 space.$s0 space.$s1;
+  margin: space.$s0 space.$s0;
   color: color.$gray-900;
   font: font.$display-sm-medium;
 }
 
 .info {
-  margin-bottom: space.$s8;
+  margin-bottom: space.$s6;
   color: color.$gray-500;
   font: font.$text-md-regular;
 }

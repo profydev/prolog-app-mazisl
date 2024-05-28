@@ -1,0 +1,54 @@
+@use "@styles/color";
+@use "@styles/font";
+@use "@styles/space";
+@use "@styles/breakpoint";
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: space.$s4;
+  background-color: color.$gray-100;
+  color: color.$gray-400;
+
+  @media (min-width: breakpoint.$desktop) {
+    padding: space.$s5 space.$s6;
+  }
+
+  @media (width <= 475px) {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+}
+
+.left,
+.center,
+.right {
+  margin: space.$s2 0;
+
+  @media (width >= 476px) {
+    margin: 0;
+  }
+}
+
+.logo {
+  width: 24px;
+  height: 24px;
+  order: 2;
+}
+
+.left {
+  order: 1;
+
+  @media (width >= 476px) {
+    order: 0;
+  }
+}
+
+.link {
+  margin: 0 space.$s2;
+  color: color.$gray-500;
+  text-decoration: none;
+  font: font.$text-sm-semibold;
+}
