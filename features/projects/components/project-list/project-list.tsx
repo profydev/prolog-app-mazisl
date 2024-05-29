@@ -1,12 +1,17 @@
 import { ProjectCard } from "../project-card";
 import { useGetProjects } from "../../api/use-get-projects";
+import { LoadingSpinner } from "../loading-spinner/loading-file";
 import styles from "./project-list.module.scss";
 
 export function ProjectList() {
   const { data, isLoading, isError, error } = useGetProjects();
 
   if (isLoading) {
-    return <div>Loading</div>;
+    return (
+      <div className={styles.loadingContainer}>
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (isError) {
