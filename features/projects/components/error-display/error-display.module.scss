@@ -1,0 +1,55 @@
+@use "@styles/font";
+@use "@styles/color";
+
+.errorContainer {
+  background: color.$error-25;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid color.$error-600;
+  border-radius: 10px;
+
+  p {
+    font: font.$text-sm-semibold;
+    color: color.$error-500;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.errorLeft {
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.exclamationContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
+  width: 16px;
+  border: 2px solid red;
+  border-radius: 50%;
+  margin-right: 18px;
+}
+
+.exclamation {
+  height: 12px;
+  filter: invert(34%) sepia(74%) saturate(2831%) hue-rotate(327deg)
+    brightness(92%) contrast(103%);
+}
+
+.arrowRight {
+  height: 14px;
+  margin-left: 18px;
+  filter: invert(34%) sepia(74%) saturate(2831%) hue-rotate(327deg)
+    brightness(92%) contrast(103%);
+}
+
+.errorRight {
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+}
