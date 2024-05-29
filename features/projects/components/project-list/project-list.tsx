@@ -1,6 +1,7 @@
 import { ProjectCard } from "../project-card";
 import { useGetProjects } from "../../api/use-get-projects";
 import { LoadingSpinner } from "../loading-spinner/loading-file";
+import { ErrorDisplay } from "../error-display/error-display";
 import styles from "./project-list.module.scss";
 
 export function ProjectList() {
@@ -16,7 +17,11 @@ export function ProjectList() {
 
   if (isError) {
     console.error(error);
-    return <div>Error: {error.message}</div>;
+    return (
+      <div>
+        <ErrorDisplay />
+      </div>
+    );
   }
 
   return (
