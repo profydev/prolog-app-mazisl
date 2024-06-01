@@ -1,12 +1,13 @@
 const path = require("path");
 
 module.exports = {
-  stories: ["../**/*.stories.mdx", "../**/*.stories.@(js|jsx|ts|tsx)"],
+  stories: ["../**/*.mdx", "../**/*.stories.@(js|jsx|ts|tsx)"],
 
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
+    "@chromatic-com/storybook",
   ],
 
   framework: {
@@ -33,5 +34,11 @@ module.exports = {
     config.resolve.alias["@styles"] = path.resolve("./styles");
     config.resolve.alias["@typings"] = path.resolve("./typings");
     return config;
+  },
+
+  docs: {},
+
+  typescript: {
+    reactDocgen: "react-docgen-typescript",
   },
 };

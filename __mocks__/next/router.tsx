@@ -1,4 +1,4 @@
-import { Story as StoryType } from "@storybook/react";
+import { StoryFn as StoryType } from "@storybook/react";
 import { Routes } from "../../config/routes";
 
 type Params = { route: string };

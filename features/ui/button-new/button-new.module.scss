@@ -1,0 +1,215 @@
+@use "@styles/color";
+@use "@styles/font";
+@use "@styles/space";
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: space.$s2;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &.small {
+    padding: 8px 14px;
+    font: font.$text-sm-medium;
+  }
+
+  &.medium {
+    padding: 10px 16px;
+    font: font.$text-sm-medium;
+  }
+
+  &.large {
+    padding: 10px 18px;
+    font: font.$text-md-medium;
+  }
+
+  &.xlarge {
+    padding: 12px 20px;
+    font: font.$text-md-medium;
+  }
+
+  &.primary {
+    background: color.$primary-600;
+    border: 1px solid color.$primary-600;
+    color: white;
+
+    &.hover {
+      background: color.$primary-700;
+      border: 1px solid color.$primary-700;
+      color: white;
+    }
+
+    &.focused {
+      background: color.$primary-600;
+      border: 1px solid color.$primary-600;
+      color: white;
+    }
+
+    &.disabled {
+      background: color.$primary-200;
+      border: 1px solid color.$primary-200;
+      color: white;
+      cursor: not-allowed;
+    }
+  }
+
+  &.secondary {
+    background: color.$primary-50;
+    border: 1px solid color.$primary-50;
+    color: color.$primary-700;
+
+    &.hover {
+      background: color.$primary-100;
+      border: 1px solid color.$primary-100;
+    }
+
+    &.focused {
+      background: color.$primary-50;
+      border: 1px solid color.$primary-50;
+      color: color.$primary-700;
+    }
+
+    &.disabled {
+      background: color.$primary-25;
+      border: 1px solid color.$primary-25;
+      color: color.$primary-300;
+      cursor: not-allowed;
+    }
+  }
+
+  &.gray {
+    background: white;
+    border: 1px solid color.$gray-300;
+    color: color.$gray-700;
+
+    &.hover {
+      background: color.$gray-50;
+      border: 1px solid color.$gray-300;
+      color: color.$gray-800;
+    }
+
+    &.focused {
+      background: white;
+      border: 1px solid color.$gray-300;
+      color: color.$gray-700;
+    }
+
+    &.disabled {
+      background: white;
+      border: 1px solid color.$gray-200;
+      color: color.$gray-300;
+      cursor: not-allowed;
+    }
+  }
+
+  &.empty {
+    background: white;
+    color: color.$primary-700;
+
+    &.hover {
+      background: color.$primary-50;
+    }
+
+    &.focused {
+      background: white;
+      color: color.$primary-700;
+    }
+
+    &.disabled {
+      color: color.$gray-300;
+    }
+  }
+
+  &.emptyGray {
+    background: white;
+    color: color.$gray-500;
+
+    &.hover {
+      background: color.$gray-50;
+      color: color.$gray-600;
+    }
+
+    &.focused {
+      background: white;
+      color: color.$gray-500;
+    }
+
+    &.disabled {
+      color: color.$gray-300;
+      cursor: not-allowed;
+    }
+  }
+
+  &.error {
+    background: color.$error-600;
+    border: 1px solid color.$error-600;
+    color: white;
+
+    &.hover {
+      background: color.$error-700;
+      border: 1px solid color.$error-700;
+    }
+
+    &.focused {
+      background: color.$error-600;
+      border: 1px solid color.$error-600;
+      color: white;
+    }
+
+    &.disabled {
+      background: color.$error-200;
+      border: 1px solid color.$error-200;
+      color: white;
+      cursor: not-allowed;
+    }
+  }
+
+  &.emptyError {
+    background: white;
+    color: color.$error-700;
+
+    &.hover {
+      background: color.$error-50;
+      color: color.$error-700;
+    }
+
+    &.focused {
+      background: white;
+      color: color.$error-700;
+    }
+
+    &.disabled {
+      color: color.$error-300;
+      cursor: not-allowed;
+    }
+  }
+
+  &.iconLeading .icon {
+    margin-right: space.$s2;
+  }
+
+  &.iconTrailing .icon {
+    margin-left: space.$s2;
+  }
+
+  &.iconOnly {
+    padding: space.$s2;
+
+    .icon {
+      margin: 0;
+    }
+  }
+}
+
+.text {
+  display: inline-flex;
+  align-items: center;
+}
