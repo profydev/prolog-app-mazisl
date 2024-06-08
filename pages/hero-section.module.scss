@@ -56,9 +56,9 @@
     }
   }
 
-  img {
-    max-width: 100%; /* Ensure the image scales down */
-    height: auto; /* Maintain aspect ratio */
+  .heroImage {
+    max-width: 100%;
+    height: auto;
     margin-top: 20px;
   }
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import styles from "./hero-section.module.scss";
 
 const baseUrl = "https://prolog-api.profy.dev";
@@ -53,11 +54,12 @@ export const HeroSection = () => {
     <div className={styles.hero}>
       <h1>{heroSection.title}</h1>
       <p>{heroSection.subtitle}</p>
-      <img
+      <Image
         src={`${baseUrl}${heroSection.image.src}`}
         alt={heroSection.title}
         width={heroSection.image.width}
         height={heroSection.image.height}
+        className={styles.heroImage}
       />
     </div>
   );
