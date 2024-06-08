@@ -19,7 +19,7 @@ export function Footer() {
 
   return (
     <footer className={styles.footer}>
-      <div className={styles.left}>Version {version}</div>
+      <div className={styles.left}>Version: {version}</div>
       <div className={styles.center}>
         <a href="#" className={styles.link}>
           Docs

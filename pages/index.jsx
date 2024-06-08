@@ -1,6 +1,7 @@
 import { Routes } from "@config/routes";
 import styles from "./index.module.scss";
 import { useState } from "react";
+import { HeroSection } from "../features/projects/components/hero-section/hero-section";
 
 const IssuesPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -30,6 +31,7 @@ const IssuesPage = () => {
           {menuOpen ? "✕" : "☰"}
         </button>
       </header>
+      <HeroSection />
       <button
         className={styles.contactButton}
         onClick={() =>

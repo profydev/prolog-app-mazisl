@@ -1,0 +1,64 @@
+@use "@styles/color";
+@use "@styles/font";
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+}
+
+.loading {
+  font-size: 24px;
+  color: color.$gray-500;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 50px;
+  margin-bottom: 100px;
+  padding: 0 16px;
+
+  h1 {
+    font-size: 60px;
+    font-weight: 600px;
+    line-height: 72px;
+    letter-spacing: -1.2px;
+    margin-bottom: 16px;
+    text-align: center;
+
+    @media (width <= 800px) {
+      font: font.$display-md-semibold;
+      letter-spacing: -0.72px;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  p {
+    color: color.$gray-500;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 30px;
+    margin-top: 10px;
+    max-width: 650px;
+    text-align: center;
+
+    @media (width <= 800px) {
+      font-size: 18px;
+      line-height: 28px;
+      letter-spacing: -0.72px;
+      margin-bottom: 0;
+      margin-bottom: 20px;
+    }
+  }
+
+  .heroImage {
+    max-width: 100%;
+    height: auto;
+    margin-top: 20px;
+  }
+}
