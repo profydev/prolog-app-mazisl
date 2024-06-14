@@ -1,0 +1,27 @@
+.filtersContainer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 0;
+}
+
+.statusFilter select,
+.levelFilter select,
+.searchBox {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-left: 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+.statusFilter select::placeholder,
+.levelFilter select::placeholder,
+.searchBox::placeholder {
+  font-size: 14px;
+  color: #bbbaba;
+}
+
+.searchBox::placeholder {
+  padding-left: 7px;
+}

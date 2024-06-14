@@ -4,18 +4,26 @@ import { useGetProjects } from "@features/projects";
 import { useGetIssues } from "../../api/use-get-issues";
 import { IssueRow } from "./issue-row";
 import styles from "./issue-list.module.scss";
+import { useIssueFilter } from "./use-issue-filter";
+import type { Project } from "@api/projects.types";
+
+// import type { PageMeta } from "@typings/page.types";
+// import type { Page } from "@typings/page.types";
+// import type { Issue } from "@api/issues.types";
+// import type { UseQueryResult } from '@tanstack/react-query';
 
 export function IssueList() {
   const router = useRouter();
-  const page = Number(router.query.page || 1);
-  const navigateToPage = (newPage: number) =>
-    router.push({
-      pathname: router.pathname,
-      query: { page: newPage },
-    });
+  const { query } = router;
+  const page = Number(query.page || 1);
+
+  const { statusFilter, levelFilter, showIssues, searchInput } =
+    useIssueFilter();
 
   const issuesPage = useGetIssues(page);
   const projects = useGetProjects();
+
+  const data: Project[] = projects.data || [];
 
   if (projects.isLoading || issuesPage.isLoading) {
     return <div>Loading</div>;
@@ -38,7 +46,34 @@ export function IssueList() {
     }),
     {} as Record<string, ProjectLanguage>,
   );
-  const { items, meta } = issuesPage.data || {};
+
+  const { meta } = issuesPage.data || {};
+
+  const matchingProjects = data.filter((project) =>
+    project.name.toLowerCase().includes(searchInput),
+  );
+
+  const matchingProjectIds = matchingProjects.map((project) => project.id);
+
+  const filteredProjects = showIssues.filter((item) =>
+    matchingProjectIds.includes(item.projectId),
+  );
+
+  const navigateToPage = (newPage: number) => {
+    router.push(
+      {
+        pathname: router.pathname,
+        query: {
+          ...query,
+          page: newPage,
+          statusFilter: statusFilter || undefined,
+          levelFilter: levelFilter || undefined,
+        },
+      },
+      undefined,
+      { shallow: true },
+    );
+  };
 
   return (
     <div className={styles.container}>
@@ -51,16 +86,30 @@ export function IssueList() {
             <th className={styles.headerCell}>Users</th>
           </tr>
         </thead>
-        <tbody>
-          {(items || []).map((issue) => (
-            <IssueRow
-              key={issue.id}
-              issue={issue}
-              projectLanguage={projectIdToLanguage[issue.projectId]}
-            />
-          ))}
-        </tbody>
+
+        {searchInput ? (
+          <tbody>
+            {(filteredProjects || []).map((issue) => (
+              <IssueRow
+                key={issue.id}
+                issue={issue}
+                projectLanguage={projectIdToLanguage[issue.projectId]}
+              />
+            ))}
+          </tbody>
+        ) : (
+          <tbody>
+            {(showIssues || []).map((issue) => (
+              <IssueRow
+                key={issue.id}
+                issue={issue}
+                projectLanguage={projectIdToLanguage[issue.projectId]}
+              />
+            ))}
+          </tbody>
+        )}
       </table>
+
       <div className={styles.paginationContainer}>
         <div>
           <button
