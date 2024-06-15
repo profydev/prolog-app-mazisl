@@ -17,7 +17,7 @@ export function IssueList() {
   const { query } = router;
   const page = Number(query.page || 1);
 
-  const { statusFilter, levelFilter, showIssues, searchInput } =
+  const { statusFilter, levelFilter, showIssues, searchInput, setPage } =
     useIssueFilter();
 
   const issuesPage = useGetIssues(page);
@@ -60,6 +60,7 @@ export function IssueList() {
   );
 
   const navigateToPage = (newPage: number) => {
+    setPage(newPage); // Update the page state in the context
     router.push(
       {
         pathname: router.pathname,

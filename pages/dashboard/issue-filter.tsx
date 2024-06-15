@@ -18,9 +18,7 @@ const IssueFilter = () => {
           value={statusFilter ?? ""}
           onChange={handleStatusFilterChange}
         >
-          <option value="" className={styles.placeholder}>
-            Status
-          </option>
+          <option value="">Status</option>
           <option value="resolved">Resolved</option>
           <option value="unresolved">Unresolved</option>
         </select>
@@ -32,9 +30,7 @@ const IssueFilter = () => {
           value={levelFilter ?? ""}
           onChange={handleLevelFilterChange}
         >
-          <option value="" className={styles.placeholder}>
-            Level
-          </option>
+          <option value="">Level</option>
           <option value="error">Error</option>
           <option value="warning">Warning</option>
           <option value="info">Info</option>

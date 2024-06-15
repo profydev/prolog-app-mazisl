@@ -38,6 +38,8 @@ type TIssueFilterProvider = {
   setIssuesList: Dispatch<SetStateAction<TIssuesList>>;
   showIssues: Issue[];
   searchInput: string;
+  page: number;
+  setPage: (v: number) => void;
 };
 
 const IssueFilterContext = createContext<TIssueFilterProvider>(
@@ -123,6 +125,20 @@ export const IssueFilterProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [statusFilter, levelFilter]);
 
+  // Initialize page state
+  const [page, setPage] = useState<number>(() => {
+    const savedPage =
+      typeof window !== "undefined" ? localStorage.getItem("page") : null;
+    return Number(query.page) || (savedPage ? Number(savedPage) : 1);
+  });
+
+  useEffect(() => {
+    // Preserve the page state in local storage
+    if (typeof window !== "undefined") {
+      localStorage.setItem("page", String(page));
+    }
+  }, [page]);
+
   useEffect(() => {
     router.push(
       {
@@ -131,12 +147,13 @@ export const IssueFilterProvider = ({ children }: { children: ReactNode }) => {
           ...query,
           statusFilter: statusFilter || undefined,
           levelFilter: levelFilter || undefined,
+          page: page,
         },
       },
       undefined,
       { shallow: true },
     );
-  }, [statusFilter, levelFilter]);
+  }, [statusFilter, levelFilter, page]);
 
   const handleStatusFilterChange = (
     e: React.ChangeEvent<HTMLSelectElement>,
@@ -161,7 +178,7 @@ export const IssueFilterProvider = ({ children }: { children: ReactNode }) => {
     setSearchInput(searchInputString);
   };
 
-  const page = Number(router.query.page || 1);
+  // const page = Number(router.query.page || 1);
   const issuesPage = useGetIssues(page);
 
   const items: Issue[] = issuesPage.data?.items || [];
@@ -237,6 +254,8 @@ export const IssueFilterProvider = ({ children }: { children: ReactNode }) => {
     setIssuesList,
     showIssues,
     searchInput,
+    page,
+    setPage,
   };
 
   return (
