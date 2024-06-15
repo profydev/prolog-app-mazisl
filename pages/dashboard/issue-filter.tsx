@@ -1,7 +1,7 @@
 import { useIssueFilter } from "@features/issues";
 import styles from "./issue-filter.module.scss";
 
-export const IssueFilter = () => {
+const IssueFilter = () => {
   const {
     statusFilter,
     levelFilter,
@@ -50,3 +50,5 @@ export const IssueFilter = () => {
     </div>
   );
 };
+
+export default IssueFilter;

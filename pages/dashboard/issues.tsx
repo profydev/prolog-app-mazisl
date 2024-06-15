@@ -1,7 +1,7 @@
 import { PageContainer } from "@features/layout";
 import { IssueList } from "@features/issues";
 import type { NextPage } from "next";
-import { IssueFilter } from "./issue-filter";
+import IssueFilter from "./issue-filter";
 
 const IssuesPage: NextPage = () => {
   return (
