@@ -4,26 +4,24 @@ import { useGetProjects } from "@features/projects";
 import { useGetIssues } from "../../api/use-get-issues";
 import { IssueRow } from "./issue-row";
 import styles from "./issue-list.module.scss";
-import { useIssueFilter } from "./use-issue-filter";
-import type { Project } from "@api/projects.types";
-
-// import type { PageMeta } from "@typings/page.types";
-// import type { Page } from "@typings/page.types";
-// import type { Issue } from "@api/issues.types";
-// import type { UseQueryResult } from '@tanstack/react-query';
 
 export function IssueList() {
   const router = useRouter();
-  const { query } = router;
-  const page = Number(query.page || 1);
+  const page = Number(router.query.page || 1);
 
-  const { statusFilter, levelFilter, showIssues, searchInput, setPage } =
-    useIssueFilter();
+  const statusFilter =
+    (router.query.status as "resolved" | "unresolved" | null) || null;
+  const levelFilter =
+    (router.query.level as "error" | "warning" | "info" | null) || null;
 
-  const issuesPage = useGetIssues(page);
+  const navigateToPage = (newPage: number) =>
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, page: newPage },
+    });
+
+  const issuesPage = useGetIssues(page, statusFilter, levelFilter);
   const projects = useGetProjects();
-
-  const data: Project[] = projects.data || [];
 
   if (projects.isLoading || issuesPage.isLoading) {
     return <div>Loading</div>;
@@ -47,34 +45,7 @@ export function IssueList() {
     {} as Record<string, ProjectLanguage>,
   );
 
-  const { meta } = issuesPage.data || {};
-
-  const matchingProjects = data.filter((project) =>
-    project.name.toLowerCase().includes(searchInput),
-  );
-
-  const matchingProjectIds = matchingProjects.map((project) => project.id);
-
-  const filteredProjects = showIssues.filter((item) =>
-    matchingProjectIds.includes(item.projectId),
-  );
-
-  const navigateToPage = (newPage: number) => {
-    setPage(newPage); // Update the page state in the context
-    router.push(
-      {
-        pathname: router.pathname,
-        query: {
-          ...query,
-          page: newPage,
-          statusFilter: statusFilter || undefined,
-          levelFilter: levelFilter || undefined,
-        },
-      },
-      undefined,
-      { shallow: true },
-    );
-  };
+  const { items, meta } = issuesPage.data || {};
 
   return (
     <div className={styles.container}>
@@ -87,30 +58,16 @@ export function IssueList() {
             <th className={styles.headerCell}>Users</th>
           </tr>
         </thead>
-
-        {searchInput ? (
-          <tbody>
-            {(filteredProjects || []).map((issue) => (
-              <IssueRow
-                key={issue.id}
-                issue={issue}
-                projectLanguage={projectIdToLanguage[issue.projectId]}
-              />
-            ))}
-          </tbody>
-        ) : (
-          <tbody>
-            {(showIssues || []).map((issue) => (
-              <IssueRow
-                key={issue.id}
-                issue={issue}
-                projectLanguage={projectIdToLanguage[issue.projectId]}
-              />
-            ))}
-          </tbody>
-        )}
+        <tbody>
+          {(items || []).map((issue) => (
+            <IssueRow
+              key={issue.id}
+              issue={issue}
+              projectLanguage={projectIdToLanguage[issue.projectId]}
+            />
+          ))}
+        </tbody>
       </table>
-
       <div className={styles.paginationContainer}>
         <div>
           <button
