@@ -6,11 +6,13 @@ const IssueFilter = () => {
   const router = useRouter();
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [levelFilter, setLevelFilter] = useState<string | null>(null);
+  const [projectNameFilter, setProjectNameFilter] = useState<string>("");
 
   useEffect(() => {
-    const { status, level } = router.query;
+    const { status, level, projectName } = router.query;
     setStatusFilter(status as string | null);
     setLevelFilter(level as string | null);
+    setProjectNameFilter((projectName as string) || "");
   }, [router.query]);
 
   const handleStatusFilterChange = (
@@ -30,6 +32,17 @@ const IssueFilter = () => {
     router.push({
       pathname: router.pathname,
       query: { ...router.query, level: newLevel, page: 1 },
+    });
+  };
+
+  const handleProjectNameFilterChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const newProjectName = e.target.value || "";
+    setProjectNameFilter(newProjectName);
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, projectName: newProjectName, page: 1 },
     });
   };
 
@@ -60,12 +73,13 @@ const IssueFilter = () => {
         </select>
       </div>
 
-      {/* <input
+      <input
         className={styles.searchBox}
         type="search"
         placeholder="Project Name"
-        onChange={handleSearchInputChange}
-      /> */}
+        value={projectNameFilter}
+        onChange={handleProjectNameFilterChange}
+      />
     </div>
   );
 };

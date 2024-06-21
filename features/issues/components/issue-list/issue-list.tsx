@@ -13,6 +13,7 @@ export function IssueList() {
     (router.query.status as "resolved" | "unresolved" | null) || null;
   const levelFilter =
     (router.query.level as "error" | "warning" | "info" | null) || null;
+  const projectNameFilter = (router.query.projectName as string) || "";
 
   const navigateToPage = (newPage: number) =>
     router.push({
@@ -21,7 +22,7 @@ export function IssueList() {
     });
 
   const issuesPage = useGetIssues(page, statusFilter, levelFilter);
-  const projects = useGetProjects();
+  const projects = useGetProjects(projectNameFilter);
 
   if (projects.isLoading || issuesPage.isLoading) {
     return <div>Loading</div>;
