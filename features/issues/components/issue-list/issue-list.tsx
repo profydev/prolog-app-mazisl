@@ -1,20 +1,30 @@
+// import { useState } from "react";
 import { useRouter } from "next/router";
 import { ProjectLanguage } from "@api/projects.types";
 import { useGetProjects } from "@features/projects";
-import { useGetIssues } from "../../api/use-get-issues";
+import { useGetIssues } from "@features/issues";
 import { IssueRow } from "./issue-row";
 import styles from "./issue-list.module.scss";
 
 export function IssueList() {
   const router = useRouter();
+  // const [searchQuery, setSearchQuery] = useState("");
   const page = Number(router.query.page || 1);
+
+  const statusFilter =
+    (router.query.status as "resolved" | "unresolved" | null) || null;
+  const levelFilter =
+    (router.query.level as "error" | "warning" | "info" | null) || null;
+  const searchQuery = (router.query.search as string) || "";
+  // const projectNameFilter = (router.query.projectName as string) || "";
+
   const navigateToPage = (newPage: number) =>
     router.push({
       pathname: router.pathname,
-      query: { page: newPage },
+      query: { ...router.query, page: newPage },
     });
 
-  const issuesPage = useGetIssues(page);
+  const issuesPage = useGetIssues(page, statusFilter, levelFilter, searchQuery);
   const projects = useGetProjects();
 
   if (projects.isLoading || issuesPage.isLoading) {
@@ -38,6 +48,7 @@ export function IssueList() {
     }),
     {} as Record<string, ProjectLanguage>,
   );
+
   const { items, meta } = issuesPage.data || {};
 
   return (
