@@ -6,13 +6,13 @@ const IssueFilter = () => {
   const router = useRouter();
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [levelFilter, setLevelFilter] = useState<string | null>(null);
-  const [projectNameFilter, setProjectNameFilter] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
-    const { status, level, projectName } = router.query;
+    const { status, level, search } = router.query;
     setStatusFilter(status as string | null);
     setLevelFilter(level as string | null);
-    setProjectNameFilter((projectName as string) || "");
+    setSearchQuery((search as string) || "");
   }, [router.query]);
 
   const handleStatusFilterChange = (
@@ -35,14 +35,12 @@ const IssueFilter = () => {
     });
   };
 
-  const handleProjectNameFilterChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const newProjectName = e.target.value || "";
-    setProjectNameFilter(newProjectName);
+  const handleSearchQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newSearch = e.target.value;
+    setSearchQuery(newSearch);
     router.push({
       pathname: router.pathname,
-      query: { ...router.query, projectName: newProjectName, page: 1 },
+      query: { ...router.query, search: newSearch, page: 1 },
     });
   };
 
@@ -77,8 +75,8 @@ const IssueFilter = () => {
         className={styles.searchBox}
         type="search"
         placeholder="Project Name"
-        value={projectNameFilter}
-        onChange={handleProjectNameFilterChange}
+        value={searchQuery}
+        onChange={handleSearchQueryChange}
       />
     </div>
   );

@@ -36,21 +36,26 @@ export function getQueryKey(
   page?: number,
   statusFilter?: string | null,
   levelFilter?: string | null,
+  searchQuery?: string | null,
 ) {
   if (page === undefined) {
     return [QUERY_KEY];
   }
-  return [QUERY_KEY, page, statusFilter, levelFilter];
+  return [QUERY_KEY, page, statusFilter, levelFilter, searchQuery];
 }
 
 export function useGetIssues(
   page: number,
   statusFilter: "resolved" | "unresolved" | null,
   levelFilter: "error" | "warning" | "info" | null,
+  searchQuery?: string | null,
 ) {
   const query = useQuery<Page<Issue>, Error>(
-    getQueryKey(page, statusFilter, levelFilter),
-    ({ signal }) => getIssues(page, statusFilter, levelFilter, { signal }),
+    getQueryKey(page, statusFilter, levelFilter, searchQuery),
+    ({ signal }) =>
+      getIssues(page, statusFilter, levelFilter, searchQuery || undefined, {
+        signal,
+      }),
     { keepPreviousData: true },
   );
 
@@ -59,11 +64,17 @@ export function useGetIssues(
   useEffect(() => {
     if (query.data?.meta.hasNextPage) {
       queryClient.prefetchQuery(
-        getQueryKey(page + 1, statusFilter, levelFilter),
+        getQueryKey(page + 1, statusFilter, levelFilter, searchQuery),
         ({ signal }) =>
-          getIssues(page + 1, statusFilter, levelFilter, { signal }),
+          getIssues(
+            page + 1,
+            statusFilter,
+            levelFilter,
+            searchQuery || undefined,
+            { signal },
+          ),
       );
     }
-  }, [query.data, page, statusFilter, levelFilter, queryClient]);
+  }, [query.data, page, statusFilter, levelFilter, searchQuery, queryClient]);
   return query;
 }
