@@ -7,6 +7,17 @@ import styles from "./issue-list.module.scss";
 import { IssueLevel, IssueStatus } from "@api/issues.types";
 import { z } from "zod";
 
+const statusOptions = [
+  { label: "Open", value: IssueStatus.open },
+  { label: "Resolved", value: IssueStatus.resolved },
+];
+
+const levelOptions = [
+  { label: "Error", value: IssueLevel.error },
+  { label: "Warning", value: IssueLevel.warning },
+  { label: "Info", value: IssueLevel.info },
+];
+
 const QueryParamsSchema = z.object({
   page: z
     .string()
@@ -40,6 +51,13 @@ export function IssueList() {
       query: { ...queryParams, page: newPage },
     });
 
+  // const updateFilter = (filters: Partial<IssueListParams>) =>
+  //   router.push({
+  //     pathname: router.pathname,
+  //     query: { ...queryParams, ...filters },
+  //   });
+  //   console.log(updateFilter)
+
   if (projects.isLoading || issuesPage.isLoading) {
     return <div>Loading</div>;
   }
@@ -65,48 +83,69 @@ export function IssueList() {
   const { items, meta } = issuesPage.data || {};
 
   return (
-    <div className={styles.container}>
-      <table className={styles.table}>
-        <thead>
-          <tr className={styles.headerRow}>
-            <th className={styles.headerCell}>Issue</th>
-            <th className={styles.headerCell}>Level</th>
-            <th className={styles.headerCell}>Events</th>
-            <th className={styles.headerCell}>Users</th>
-          </tr>
-        </thead>
-        <tbody>
-          {(items || []).map((issue) => (
-            <IssueRow
-              key={issue.id}
-              issue={issue}
-              projectLanguage={projectIdToLanguage[issue.projectId]}
-            />
-          ))}
-        </tbody>
-      </table>
-      <div className={styles.paginationContainer}>
-        <div>
-          <button
-            className={styles.paginationButton}
-            onClick={() => navigateToPage(queryParams.page - 1)}
-            disabled={queryParams.page === 1}
-          >
-            Previous
-          </button>
-          <button
-            className={styles.paginationButton}
-            onClick={() => navigateToPage(queryParams.page + 1)}
-            disabled={queryParams.page === meta?.totalPages}
-          >
-            Next
-          </button>
-        </div>
-        <div className={styles.pageInfo}>
-          Page <span className={styles.pageNumber}>{meta?.currentPage}</span> of{" "}
-          <span className={styles.pageNumber}>{meta?.totalPages}</span>
+    <>
+      <div className={styles.filters}>
+        <select className={styles.selectFilter} id="">
+          <option>Status</option>
+          <option value={statusOptions[0].value}>Resolved</option>
+          <option value={statusOptions[1].value}>Unresolved</option>
+        </select>
+
+        <select className={styles.selectFilter} id="">
+          <option>Level</option>
+          <option value={levelOptions[0].value}>Error</option>
+          <option value={levelOptions[1].value}>Warning</option>
+          <option value={levelOptions[2].value}>Info</option>
+        </select>
+
+        <input className={styles.projectFilter} placeholder="Project Name" />
+      </div>
+
+      <div className={styles.container}>
+        <table className={styles.table}>
+          <thead>
+            <tr className={styles.headerRow}>
+              <th className={styles.headerCell}>Issue</th>
+              <th className={styles.headerCell}>Level</th>
+              <th className={styles.headerCell}>Events</th>
+              <th className={styles.headerCell}>Users</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {(items || []).map((issue) => (
+              <IssueRow
+                key={issue.id}
+                issue={issue}
+                projectLanguage={projectIdToLanguage[issue.projectId]}
+              />
+            ))}
+          </tbody>
+        </table>
+
+        <div className={styles.paginationContainer}>
+          <div>
+            <button
+              className={styles.paginationButton}
+              onClick={() => navigateToPage(queryParams.page - 1)}
+              disabled={queryParams.page === 1}
+            >
+              Previous
+            </button>
+            <button
+              className={styles.paginationButton}
+              onClick={() => navigateToPage(queryParams.page + 1)}
+              disabled={queryParams.page === meta?.totalPages}
+            >
+              Next
+            </button>
+          </div>
+          <div className={styles.pageInfo}>
+            Page <span className={styles.pageNumber}>{meta?.currentPage}</span>{" "}
+            of <span className={styles.pageNumber}>{meta?.totalPages}</span>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
