@@ -5,18 +5,9 @@ import { useGetIssues } from "@features/issues";
 import { IssueRow } from "./issue-row";
 import styles from "./issue-list.module.scss";
 import { IssueLevel, IssueStatus } from "@api/issues.types";
+
+// import {Select} from "@features/ui";
 import { z } from "zod";
-
-const statusOptions = [
-  { label: "Open", value: IssueStatus.open },
-  { label: "Resolved", value: IssueStatus.resolved },
-];
-
-const levelOptions = [
-  { label: "Error", value: IssueLevel.error },
-  { label: "Warning", value: IssueLevel.warning },
-  { label: "Info", value: IssueLevel.info },
-];
 
 const QueryParamsSchema = z.object({
   page: z
@@ -84,18 +75,16 @@ export function IssueList() {
 
   return (
     <>
-      <div className={styles.filters}>
-        <select className={styles.selectFilter} id="">
-          <option>Status</option>
-          <option value={statusOptions[0].value}>Resolved</option>
-          <option value={statusOptions[1].value}>Unresolved</option>
+      <div>
+        <select>
+          <option value="resolved">Resolved</option>
+          <option value="unresolved">Unresolved</option>
         </select>
 
-        <select className={styles.selectFilter} id="">
-          <option>Level</option>
-          <option value={levelOptions[0].value}>Error</option>
-          <option value={levelOptions[1].value}>Warning</option>
-          <option value={levelOptions[2].value}>Info</option>
+        <select>
+          <option value="error">Error</option>
+          <option value="warning">Warning</option>
+          <option value="info">Info</option>
         </select>
 
         <input className={styles.projectFilter} placeholder="Project Name" />
