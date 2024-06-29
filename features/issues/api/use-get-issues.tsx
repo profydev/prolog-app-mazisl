@@ -2,79 +2,34 @@ import { useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getIssues } from "@api/issues";
 import type { Page } from "@typings/page.types";
-import type { Issue } from "@api/issues.types";
+import type { Issue, IssueListParams } from "@api/issues.types";
 
 const QUERY_KEY = "issues";
 
-// export function getQueryKey(page?: number) {
-//   if (page === undefined) {
-//     return [QUERY_KEY];
-//   }
-//   return [QUERY_KEY, page];
-// }
-
-// export function useGetIssues(page: number) {
-//   const query = useQuery<Page<Issue>, Error>(
-//     getQueryKey(page),
-//     ({ signal }) => getIssues(page, { signal }),
-//     { keepPreviousData: true },
-//   );
-
-// Prefetch the next page!
-//   const queryClient = useQueryClient();
-//   useEffect(() => {
-//     if (query.data?.meta.hasNextPage) {
-//       queryClient.prefetchQuery(getQueryKey(page + 1), ({ signal }) =>
-//         getIssues(page + 1, { signal }),
-//       );
-//     }
-//   }, [query.data, page, queryClient]);
-//   return query;
-// }
-
-export function getQueryKey(
-  page?: number,
-  statusFilter?: string | null,
-  levelFilter?: string | null,
-  searchQuery?: string | null,
-) {
-  if (page === undefined) {
-    return [QUERY_KEY];
-  }
-  return [QUERY_KEY, page, statusFilter, levelFilter, searchQuery];
+export function getQueryKey(params: IssueListParams) {
+  return [QUERY_KEY, ...Object.values(params)];
 }
 
-export function useGetIssues(
-  page: number,
-  statusFilter: "resolved" | "unresolved" | null,
-  levelFilter: "error" | "warning" | "info" | null,
-  searchQuery?: string | null,
-) {
+export function useGetIssues(params: IssueListParams) {
   const query = useQuery<Page<Issue>, Error>(
-    getQueryKey(page, statusFilter, levelFilter, searchQuery),
-    ({ signal }) =>
-      getIssues(page, statusFilter, levelFilter, searchQuery || undefined, {
-        signal,
-      }),
+    getQueryKey(params),
+    ({ signal }) => getIssues(params, { signal }),
     { keepPreviousData: true },
   );
 
-  // Prefetch the next page!
   const queryClient = useQueryClient();
+
+  const paramsJson = JSON.stringify(params);
+
   useEffect(() => {
     if (query.data?.meta.hasNextPage) {
-      queryClient.prefetchQuery(
-        getQueryKey(page + 1, statusFilter, levelFilter, searchQuery),
-        ({ signal }) =>
-          getIssues(
-            page + 1,
-            statusFilter,
-            levelFilter,
-            searchQuery || undefined,
-            { signal },
-          ),
+      const nextPageParams: IssueListParams = JSON.parse(paramsJson);
+      nextPageParams.page += 1;
+      queryClient.prefetchQuery(getQueryKey(nextPageParams), ({ signal }) =>
+        getIssues(nextPageParams, { signal }),
       );
     }
-  }, [query.data, page, statusFilter, levelFilter, searchQuery, queryClient]);
+  }, [query.data, paramsJson, queryClient]);
+
   return query;
 }
