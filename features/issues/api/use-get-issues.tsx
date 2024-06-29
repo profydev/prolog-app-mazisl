@@ -3,7 +3,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getIssues } from "@api/issues";
 import type { Page } from "@typings/page.types";
 import type { Issue, IssueListParams } from "@api/issues.types";
-// import useDeepCompareEffect from "use-deep-compare-effect";
 
 const QUERY_KEY = "issues";
 
@@ -18,7 +17,6 @@ export function useGetIssues(params: IssueListParams) {
     { keepPreviousData: true },
   );
 
-  // Prefetch the next page!
   const queryClient = useQueryClient();
 
   const paramsJson = JSON.stringify(params);

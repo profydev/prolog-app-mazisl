@@ -1,0 +1,39 @@
+.searchInput {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.input {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #333;
+
+  &::placeholder {
+    color: #999;
+  }
+}
+
+.focused {
+  border-color: #007bff;
+}
+
+.filled {
+  border-color: #28a745;
+}
+
+.disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+.icon {
+  position: absolute;
+  right: 16px;
+  pointer-events: none;
+  color: #999;
+}
