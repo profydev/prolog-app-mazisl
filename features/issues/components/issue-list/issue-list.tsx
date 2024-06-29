@@ -6,7 +6,6 @@ import { IssueRow } from "./issue-row";
 import styles from "./issue-list.module.scss";
 import { IssueLevel, IssueStatus } from "@api/issues.types";
 
-// import {Select} from "@features/ui";
 import { z } from "zod";
 
 const QueryParamsSchema = z.object({
@@ -41,13 +40,6 @@ export function IssueList() {
       pathname: router.pathname,
       query: { ...queryParams, page: newPage },
     });
-
-  // const updateFilter = (filters: Partial<IssueListParams>) =>
-  //   router.push({
-  //     pathname: router.pathname,
-  //     query: { ...queryParams, ...filters },
-  //   });
-  //   console.log(updateFilter)
 
   if (projects.isLoading || issuesPage.isLoading) {
     return <div>Loading</div>;
