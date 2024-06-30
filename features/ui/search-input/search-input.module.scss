@@ -1,13 +1,22 @@
+@use "@styles/color";
+@use "@styles/font";
+@use "@styles/space";
+
 .searchInput {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   position: relative;
+}
+
+.label {
+  font: font.$text-sm-medium;
+  color: color.$gray-500;
 }
 
 .input {
   padding: 8px 16px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: space.$s2;
   width: 100%;
   box-sizing: border-box;
   font-size: 16px;
@@ -33,7 +42,8 @@
 
 .icon {
   position: absolute;
-  right: 16px;
+  right: 10px;
+  top: 30px;
   pointer-events: none;
-  color: #999;
+  transform: scaleX(-1);
 }

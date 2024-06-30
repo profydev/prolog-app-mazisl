@@ -5,6 +5,8 @@ import { useGetIssues } from "@features/issues";
 import { IssueRow } from "./issue-row";
 import styles from "./issue-list.module.scss";
 import { IssueLevel, IssueStatus } from "@api/issues.types";
+import { useState } from "react";
+import { Select, SearchInput } from "@features/ui";
 
 import { z } from "zod";
 
@@ -28,10 +30,10 @@ function parseQueryParams(query: NextRouter["query"]) {
 }
 
 export function IssueList() {
+  const [searchValue, setSearchValue] = useState<string>("");
+
   const router = useRouter();
   const queryParams = parseQueryParams(router.query);
-  console.log(queryParams);
-
   const issuesPage = useGetIssues(queryParams);
   const projects = useGetProjects();
 
@@ -67,19 +69,38 @@ export function IssueList() {
 
   return (
     <>
-      <div>
-        <select>
-          <option value="resolved">Resolved</option>
-          <option value="unresolved">Unresolved</option>
-        </select>
+      <div className={styles.filters}>
+        <Select
+          label="Status Filter"
+          placeholder="Status"
+          options={["Resolved", "Open"]}
+          onChange={(value) => {
+            router.push({
+              pathname: router.pathname,
+              query: { ...queryParams, status: value.toLocaleLowerCase() },
+            });
+          }}
+        />
 
-        <select>
-          <option value="error">Error</option>
-          <option value="warning">Warning</option>
-          <option value="info">Info</option>
-        </select>
+        <Select
+          label="Level Filter"
+          placeholder="Level"
+          options={["Error", "Warning", "Info"]}
+          onChange={(value) => {
+            router.push({
+              pathname: router.pathname,
+              query: { ...queryParams, level: value.toLocaleLowerCase() },
+            });
+          }}
+        />
 
-        <input className={styles.projectFilter} placeholder="Project Name" />
+        <SearchInput
+          label="Search Project"
+          searchValue={searchValue}
+          handleSearchChange={(e) => setSearchValue(e.target.value)}
+          placeholder="Search..."
+          disabled={false}
+        />
       </div>
 
       <div className={styles.container}>

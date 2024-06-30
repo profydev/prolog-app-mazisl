@@ -40,10 +40,6 @@ export function Select({
     if (onChange) onChange(value);
   };
 
-  const handleBlur = () => {
-    setIsOpen(false);
-  };
-
   return (
     <div className={styles.selectWrapper}>
       {label && <label className={styles.label}>{label}</label>}
@@ -56,13 +52,13 @@ export function Select({
         )}
         tabIndex={0}
         onClick={handleSelectClick}
-        onBlur={handleBlur}
       >
         <span className={styles.selectedValue}>
           {selectedValue || placeholder}
         </span>
         <span className={classNames(styles.arrow, { [styles.up]: isOpen })} />
       </div>
+
       {isOpen && (
         <ul className={styles.options}>
           {options.map((option, index) => (
