@@ -4,11 +4,22 @@ import { useGetProjects } from "@features/projects";
 import { useGetIssues } from "@features/issues";
 import { IssueRow } from "./issue-row";
 import styles from "./issue-list.module.scss";
-import { IssueLevel, IssueStatus } from "@api/issues.types";
-import { useState } from "react";
+import { IssueLevel, IssueListParams, IssueStatus } from "@api/issues.types";
+// import { useState } from "react";
 import { Select, SearchInput } from "@features/ui";
 
 import { z } from "zod";
+
+const statusOptions = [
+  { label: "Resolved", value: IssueStatus.resolved },
+  { label: "Unresolved", value: IssueStatus.open },
+];
+
+const levelOptions = [
+  { label: "Error", value: IssueLevel.error },
+  { label: "Warning", value: IssueLevel.warning },
+  { label: "Info", value: IssueLevel.info },
+];
 
 const QueryParamsSchema = z.object({
   page: z
@@ -30,7 +41,7 @@ function parseQueryParams(query: NextRouter["query"]) {
 }
 
 export function IssueList() {
-  const [searchValue, setSearchValue] = useState<string>("");
+  // const [searchValue, setSearchValue] = useState<string>("");
 
   const router = useRouter();
   const queryParams = parseQueryParams(router.query);
@@ -41,6 +52,12 @@ export function IssueList() {
     router.push({
       pathname: router.pathname,
       query: { ...queryParams, page: newPage },
+    });
+
+  const updateFilter = (filters: Partial<IssueListParams>) =>
+    router.push({
+      pathname: router.pathname,
+      query: { ...queryParams, ...filters },
     });
 
   if (projects.isLoading || issuesPage.isLoading) {
@@ -73,7 +90,7 @@ export function IssueList() {
         <Select
           label="Status Filter"
           placeholder="Status"
-          options={["Resolved", "Open"]}
+          options={statusOptions}
           onChange={(value) => {
             router.push({
               pathname: router.pathname,
@@ -85,7 +102,7 @@ export function IssueList() {
         <Select
           label="Level Filter"
           placeholder="Level"
-          options={["Error", "Warning", "Info"]}
+          options={levelOptions}
           onChange={(value) => {
             router.push({
               pathname: router.pathname,
@@ -96,8 +113,8 @@ export function IssueList() {
 
         <SearchInput
           label="Search Project"
-          searchValue={searchValue}
-          handleSearchChange={(e) => setSearchValue(e.target.value)}
+          searchValue={queryParams.project || ""}
+          handleSearchChange={(e) => updateFilter({ project: e.target.value })}
           placeholder="Search..."
           disabled={false}
         />

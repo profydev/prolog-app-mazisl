@@ -18,7 +18,9 @@
   justify-content: space-between;
   border: 1px solid color.$gray-300;
   border-radius: space.$s2;
-  width: 150px;
+
+  // width: 150px;
+  min-width: 10rem;
   padding: 6px 16px;
   cursor: pointer;
   transition: background-color 0.3s;
