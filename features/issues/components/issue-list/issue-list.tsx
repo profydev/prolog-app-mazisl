@@ -6,6 +6,7 @@ import { IssueRow } from "./issue-row";
 import styles from "./issue-list.module.scss";
 import { IssueLevel, IssueListParams, IssueStatus } from "@api/issues.types";
 import { Select, SearchInput } from "@features/ui";
+import { useThrottle } from "@uidotdev/usehooks";
 
 import { z } from "zod";
 
@@ -50,7 +51,12 @@ function removeEmptyValues(filters: Partial<IssueListParams>) {
 export function IssueList() {
   const router = useRouter();
   const queryParams = parseQueryParams(router.query);
-  const issuesPage = useGetIssues(queryParams);
+
+  const throttledProjectFilter = useThrottle(queryParams.project, 500);
+  const issuesPage = useGetIssues({
+    ...queryParams,
+    project: throttledProjectFilter,
+  });
   const projects = useGetProjects();
 
   // const navigateToPage = (newPage: number) =>
