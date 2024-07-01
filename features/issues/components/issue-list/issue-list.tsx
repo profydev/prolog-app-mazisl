@@ -70,12 +70,6 @@ export function IssueList() {
     });
   };
 
-  const updateFilter = (filters: Partial<IssueListParams>) =>
-    router.push({
-      pathname: router.pathname,
-      query: { ...queryParams, ...filters },
-    });
-
   if (projects.isLoading || issuesPage.isLoading) {
     return <div>Loading</div>;
   }
