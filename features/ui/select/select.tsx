@@ -39,6 +39,8 @@ export function Select({
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
   const handleSelectClick = () => {
     if (state !== SelectState.disabled) {
       setIsOpen(!isOpen);
