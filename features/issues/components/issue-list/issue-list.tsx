@@ -59,12 +59,6 @@ export function IssueList() {
   });
   const projects = useGetProjects();
 
-  // const navigateToPage = (newPage: number) =>
-  //   router.push({
-  //     pathname: router.pathname,
-  //     query: { ...queryParams, page: newPage },
-  //   });
-
   const updateFilter = (filters: Partial<IssueListParams>) => {
     const newQueryParams = removeEmptyValues({
       ...queryParams,

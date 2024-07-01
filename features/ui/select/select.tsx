@@ -85,8 +85,6 @@ export function Select({
         onClick={handleSelectClick}
       >
         <span className={styles.selectedValue}>
-          {/* {options.find((option) => option.value === selectedValue)?.label ||
-            placeholder} */}
           {selectedValue === RESET_VALUE
             ? placeholder
             : options.find((option) => option.value === selectedValue)?.label}
