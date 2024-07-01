@@ -5,12 +5,19 @@
 .searchInput {
   display: flex;
   flex-direction: column;
-  position: relative;
 }
 
 .label {
   font: font.$text-sm-medium;
   color: color.$gray-500;
+
+  @media (width <= 570px) {
+    position: absolute;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+    visibility: hidden;
+  }
 }
 
 .input {
@@ -46,4 +53,19 @@
   top: 30px;
   pointer-events: none;
   transform: scaleX(-1);
+  display: none;
+
+  @media (width <= 570px) {
+    top: 10px;
+  }
+}
+
+@media (width <= 720px) {
+  .searchInput {
+    width: 100%;
+  }
+
+  .input {
+    width: 100%;
+  }
 }

@@ -2,7 +2,7 @@ import { NextRouter, useRouter } from "next/router";
 import { ProjectLanguage } from "@api/projects.types";
 import { useGetProjects } from "@features/projects";
 import { useGetIssues } from "@features/issues";
-import { IssueRow } from "./issue-row";
+import { IssueRow, IssueCard } from "./issue-row";
 import styles from "./issue-list.module.scss";
 import { IssueLevel, IssueListParams, IssueStatus } from "@api/issues.types";
 import { Select, SearchInput } from "@features/ui";
@@ -116,17 +116,17 @@ export function IssueList() {
         />
 
         <SearchInput
-          label="Search Project"
+          label="Search Project by Name"
           searchValue={queryParams.project || ""}
           handleSearchChange={(e) => updateFilter({ project: e.target.value })}
-          placeholder="Search..."
+          placeholder="Search Project"
           disabled={false}
         />
       </div>
 
       <div className={styles.container}>
         <table className={styles.table}>
-          <thead>
+          <thead className={styles.tableHeader}>
             <tr className={styles.headerRow}>
               <th className={styles.headerCell}>Issue</th>
               <th className={styles.headerCell}>Level</th>
@@ -145,6 +145,16 @@ export function IssueList() {
             ))}
           </tbody>
         </table>
+
+        <div className={styles.cardList}>
+          {(items || []).map((issue) => (
+            <IssueCard
+              key={issue.id}
+              issue={issue}
+              projectLanguage={projectIdToLanguage[issue.projectId]}
+            />
+          ))}
+        </div>
 
         <div className={styles.paginationContainer}>
           <div>

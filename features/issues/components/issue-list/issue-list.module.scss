@@ -18,11 +18,21 @@
   border-collapse: collapse;
 }
 
+.tableHeader {
+  @media (width <= 630px) {
+    display: none;
+  }
+}
+
 .filters {
   display: flex;
   justify-content: flex-end;
   gap: space.$s4;
   margin-bottom: space.$s6;
+
+  @media (width <= 720px) {
+    flex-direction: column;
+  }
 }
 
 .selectFilter,
@@ -92,4 +102,12 @@
 
 .pageNumber {
   font: font.$text-sm-medium;
+}
+
+.cardList {
+  display: none;
+
+  @media (width <= 630px) {
+    display: block;
+  }
 }
