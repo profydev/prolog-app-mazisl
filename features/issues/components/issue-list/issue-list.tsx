@@ -60,7 +60,10 @@ export function IssueList() {
   //   });
 
   const updateFilter = (filters: Partial<IssueListParams>) => {
-    const newQueryParams = removeEmptyValues({ ...queryParams, ...filters });
+    const newQueryParams = removeEmptyValues({
+      ...queryParams,
+      ...filters,
+    });
     router.push({
       pathname: router.pathname,
       query: newQueryParams,
@@ -99,10 +102,7 @@ export function IssueList() {
           placeholder="Status"
           options={statusOptions}
           onChange={(value) => {
-            router.push({
-              pathname: router.pathname,
-              query: { ...queryParams, status: value.toLocaleLowerCase() },
-            });
+            updateFilter({ status: value as IssueStatus });
           }}
         />
 
@@ -111,10 +111,7 @@ export function IssueList() {
           placeholder="Level"
           options={levelOptions}
           onChange={(value) => {
-            router.push({
-              pathname: router.pathname,
-              query: { ...queryParams, level: value.toLocaleLowerCase() },
-            });
+            updateFilter({ level: value as IssueLevel });
           }}
         />
 
