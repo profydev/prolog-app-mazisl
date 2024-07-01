@@ -23,6 +23,8 @@ type SelectProps = {
   onChange?: (value: string) => void;
 };
 
+const RESET_VALUE = "SELECT_RESET_OPTION_VALUE" as const;
+
 export function Select({
   label,
   placeholder,
@@ -31,7 +33,9 @@ export function Select({
   onChange,
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState<
+    string | typeof RESET_VALUE
+  >(RESET_VALUE);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -41,10 +45,10 @@ export function Select({
     }
   };
 
-  const handleOptionClick = (value: string) => {
+  const handleOptionClick = (value: string | typeof RESET_VALUE) => {
     setSelectedValue(value);
     setIsOpen(false);
-    if (onChange) onChange(value);
+    if (onChange) onChange(value === RESET_VALUE ? "" : value);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -75,20 +79,27 @@ export function Select({
           styles.select,
           styles[state],
           { [styles.open]: isOpen },
-          { [styles.filled]: selectedValue },
+          { [styles.filled]: selectedValue !== RESET_VALUE },
         )}
         tabIndex={0}
         onClick={handleSelectClick}
       >
         <span className={styles.selectedValue}>
-          {options.find((option) => option.value === selectedValue)?.label ||
-            placeholder}
+          {selectedValue === RESET_VALUE
+            ? placeholder
+            : options.find((option) => option.value === selectedValue)?.label}
         </span>
         <span className={classNames(styles.arrow, { [styles.up]: isOpen })} />
       </div>
 
       {isOpen && (
         <ul className={styles.options}>
+          <li
+            className={classNames(styles.option, styles.resetOption)}
+            onClick={() => handleOptionClick(RESET_VALUE)}
+          >
+            All
+          </li>
           {options.map((option, index) => (
             <li
               key={index}

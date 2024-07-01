@@ -6,6 +6,7 @@ import { IssueRow } from "./issue-row";
 import styles from "./issue-list.module.scss";
 import { IssueLevel, IssueListParams, IssueStatus } from "@api/issues.types";
 import { Select, SearchInput } from "@features/ui";
+import { useThrottle } from "@uidotdev/usehooks";
 
 import { z } from "zod";
 
@@ -39,23 +40,35 @@ function parseQueryParams(query: NextRouter["query"]) {
   return parsed.data;
 }
 
+function removeEmptyValues(filters: Partial<IssueListParams>) {
+  return Object.fromEntries(
+    Object.entries(filters).filter(
+      ([, value]) => Boolean(value) && value !== "",
+    ),
+  );
+}
+
 export function IssueList() {
   const router = useRouter();
   const queryParams = parseQueryParams(router.query);
-  const issuesPage = useGetIssues(queryParams);
+
+  const throttledProjectFilter = useThrottle(queryParams.project, 500);
+  const issuesPage = useGetIssues({
+    ...queryParams,
+    project: throttledProjectFilter,
+  });
   const projects = useGetProjects();
 
-  const navigateToPage = (newPage: number) =>
+  const updateFilter = (filters: Partial<IssueListParams>) => {
+    const newQueryParams = removeEmptyValues({
+      ...queryParams,
+      ...filters,
+    });
     router.push({
       pathname: router.pathname,
-      query: { ...queryParams, page: newPage },
+      query: newQueryParams,
     });
-
-  const updateFilter = (filters: Partial<IssueListParams>) =>
-    router.push({
-      pathname: router.pathname,
-      query: { ...queryParams, ...filters },
-    });
+  };
 
   if (projects.isLoading || issuesPage.isLoading) {
     return <div>Loading</div>;
@@ -89,10 +102,7 @@ export function IssueList() {
           placeholder="Status"
           options={statusOptions}
           onChange={(value) => {
-            router.push({
-              pathname: router.pathname,
-              query: { ...queryParams, status: value.toLocaleLowerCase() },
-            });
+            updateFilter({ status: value as IssueStatus });
           }}
         />
 
@@ -101,10 +111,7 @@ export function IssueList() {
           placeholder="Level"
           options={levelOptions}
           onChange={(value) => {
-            router.push({
-              pathname: router.pathname,
-              query: { ...queryParams, level: value.toLocaleLowerCase() },
-            });
+            updateFilter({ level: value as IssueLevel });
           }}
         />
 
@@ -143,14 +150,14 @@ export function IssueList() {
           <div>
             <button
               className={styles.paginationButton}
-              onClick={() => navigateToPage(queryParams.page - 1)}
+              onClick={() => updateFilter({ page: queryParams.page - 1 })}
               disabled={queryParams.page === 1}
             >
               Previous
             </button>
             <button
               className={styles.paginationButton}
-              onClick={() => navigateToPage(queryParams.page + 1)}
+              onClick={() => updateFilter({ page: queryParams.page + 1 })}
               disabled={queryParams.page === meta?.totalPages}
             >
               Next
