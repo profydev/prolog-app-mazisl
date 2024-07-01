@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import classNames from "classnames";
 import styles from "./select.module.scss";
 
@@ -10,10 +10,15 @@ export enum SelectState {
   disabled = "disabled",
 }
 
+type Option = {
+  label: string;
+  value: string;
+};
+
 type SelectProps = {
   label?: string;
   placeholder: string;
-  options: string[];
+  options: Option[];
   state?: SelectState;
   onChange?: (value: string) => void;
 };
@@ -28,6 +33,8 @@ export function Select({
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState("");
 
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
   const handleSelectClick = () => {
     if (state !== SelectState.disabled) {
       setIsOpen(!isOpen);
@@ -40,12 +47,28 @@ export function Select({
     if (onChange) onChange(value);
   };
 
-  const handleBlur = () => {
-    setIsOpen(false);
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      wrapperRef.current &&
+      !wrapperRef.current.contains(event.target as Node)
+    ) {
+      setIsOpen(false);
+    }
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
-    <div className={styles.selectWrapper}>
+    <div className={styles.selectWrapper} ref={wrapperRef}>
       {label && <label className={styles.label}>{label}</label>}
       <div
         className={classNames(
@@ -56,22 +79,23 @@ export function Select({
         )}
         tabIndex={0}
         onClick={handleSelectClick}
-        onBlur={handleBlur}
       >
         <span className={styles.selectedValue}>
-          {selectedValue || placeholder}
+          {options.find((option) => option.value === selectedValue)?.label ||
+            placeholder}
         </span>
         <span className={classNames(styles.arrow, { [styles.up]: isOpen })} />
       </div>
+
       {isOpen && (
         <ul className={styles.options}>
           {options.map((option, index) => (
             <li
               key={index}
               className={styles.option}
-              onClick={() => handleOptionClick(option)}
+              onClick={() => handleOptionClick(option.value)}
             >
-              {option}
+              {option.label}
             </li>
           ))}
         </ul>

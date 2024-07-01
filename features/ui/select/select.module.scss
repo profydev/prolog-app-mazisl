@@ -8,9 +8,8 @@
 }
 
 .label {
-  margin-bottom: space.$s2;
-  font: font.$text-md-medium;
-  color: color.$gray-700;
+  font: font.$text-sm-medium;
+  color: color.$gray-500;
 }
 
 .select {
@@ -19,7 +18,10 @@
   justify-content: space-between;
   border: 1px solid color.$gray-300;
   border-radius: space.$s2;
-  padding: 10px 16px;
+
+  // width: 150px;
+  min-width: 10rem;
+  padding: 6px 16px;
   cursor: pointer;
   transition: background-color 0.3s;
   font: font.$text-md-medium;
@@ -74,10 +76,14 @@
   background: white;
   border: 1px solid color.$gray-300;
   border-radius: space.$s2;
-  margin-top: 4px;
+  margin: 0;
+  padding: 0;
+  width: 180px;
+  margin-top: 60px;
   box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
   z-index: 1;
   max-height: 200px;
+  list-style: none;
   overflow-y: auto;
 }
 

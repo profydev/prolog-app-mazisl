@@ -16,7 +16,11 @@ export const Default = Template.bind({});
 Default.args = {
   label: "Select Label",
   placeholder: "Select an option",
-  options: ["Option 1", "Option 2", "Option 3"],
+  options: [
+    { label: "Option 1", value: "option1" },
+    { label: "Option 2", value: "option2" },
+    { label: "Option 3", value: "option3" },
+  ],
   state: SelectState.empty,
 };
 
@@ -24,7 +28,11 @@ export const Filled = Template.bind({});
 Filled.args = {
   label: "Select Label",
   placeholder: "Select an option",
-  options: ["Option 1", "Option 2", "Option 3"],
+  options: [
+    { label: "Option 1", value: "option1" },
+    { label: "Option 2", value: "option2" },
+    { label: "Option 3", value: "option3" },
+  ],
   state: SelectState.filled,
 };
 
@@ -32,6 +40,10 @@ export const Disabled = Template.bind({});
 Disabled.args = {
   label: "Select Label",
   placeholder: "Select an option",
-  options: ["Option 1", "Option 2", "Option 3"],
+  options: [
+    { label: "Option 1", value: "option1" },
+    { label: "Option 2", value: "option2" },
+    { label: "Option 3", value: "option3" },
+  ],
   state: SelectState.disabled,
 };
