@@ -10,6 +10,14 @@
 .label {
   font: font.$text-sm-medium;
   color: color.$gray-500;
+
+  @media (width <= 570px) {
+    position: absolute;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+    visibility: hidden;
+  }
 }
 
 .select {
@@ -83,6 +91,10 @@
   max-height: 200px;
   list-style: none;
   overflow-y: auto;
+
+  @media (width <= 570px) {
+    margin-top: 40px;
+  }
 }
 
 .option {
@@ -99,4 +111,14 @@
 .resetOption {
   font: font.$text-sm-regular;
   color: color.$gray-400;
+}
+
+@media (width <= 720px) {
+  .selectWrapper {
+    width: 100%;
+  }
+
+  .options {
+    width: 90%;
+  }
 }

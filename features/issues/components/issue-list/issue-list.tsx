@@ -116,10 +116,10 @@ export function IssueList() {
         />
 
         <SearchInput
-          label="Search Project"
+          label="Search Project by Name"
           searchValue={queryParams.project || ""}
           handleSearchChange={(e) => updateFilter({ project: e.target.value })}
-          placeholder="Search..."
+          placeholder="Search Project"
           disabled={false}
         />
       </div>

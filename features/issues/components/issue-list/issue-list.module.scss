@@ -23,6 +23,10 @@
   justify-content: flex-end;
   gap: space.$s4;
   margin-bottom: space.$s6;
+
+  @media (width <= 720px) {
+    flex-direction: column;
+  }
 }
 
 .selectFilter,
