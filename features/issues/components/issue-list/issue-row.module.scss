@@ -30,3 +30,54 @@
 .errorType {
   font: font.$text-sm-medium;
 }
+
+.card {
+  background: white;
+  border: 1px solid color.$gray-200;
+  box-shadow: 0 2px 4px rgb(16 24 40 / 10%);
+  border-radius: space.$s2;
+  margin-bottom: space.$s4;
+  padding: space.$s6;
+
+  @media (width <= 350px) {
+    padding-bottom: space.$s4;
+  }
+
+  .cardHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: space.$s6;
+
+    @media (width <= 350px) {
+      flex-direction: column;
+      justify-content: center;
+      margin-bottom: space.$s2;
+
+      img {
+        margin-bottom: 15px;
+      }
+    }
+  }
+
+  .cardDetails {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+
+    .cardDetail {
+      margin: space.$s3;
+
+      .cardDetailHeader {
+        font: font.$text-sm-medium;
+        color: color.$gray-500;
+        margin-bottom: space.$s2;
+      }
+    }
+  }
+}
+
+@media (width <= 630px) {
+  .row {
+    display: none;
+  }
+}
