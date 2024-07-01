@@ -39,23 +39,33 @@ function parseQueryParams(query: NextRouter["query"]) {
   return parsed.data;
 }
 
+function removeEmptyValues(filters: Partial<IssueListParams>) {
+  return Object.fromEntries(
+    Object.entries(filters).filter(
+      ([, value]) => Boolean(value) && value !== "",
+    ),
+  );
+}
+
 export function IssueList() {
   const router = useRouter();
   const queryParams = parseQueryParams(router.query);
   const issuesPage = useGetIssues(queryParams);
   const projects = useGetProjects();
 
-  const navigateToPage = (newPage: number) =>
-    router.push({
-      pathname: router.pathname,
-      query: { ...queryParams, page: newPage },
-    });
+  // const navigateToPage = (newPage: number) =>
+  //   router.push({
+  //     pathname: router.pathname,
+  //     query: { ...queryParams, page: newPage },
+  //   });
 
-  const updateFilter = (filters: Partial<IssueListParams>) =>
+  const updateFilter = (filters: Partial<IssueListParams>) => {
+    const newQueryParams = removeEmptyValues({ ...queryParams, ...filters });
     router.push({
       pathname: router.pathname,
-      query: { ...queryParams, ...filters },
+      query: newQueryParams,
     });
+  };
 
   if (projects.isLoading || issuesPage.isLoading) {
     return <div>Loading</div>;
@@ -143,14 +153,14 @@ export function IssueList() {
           <div>
             <button
               className={styles.paginationButton}
-              onClick={() => navigateToPage(queryParams.page - 1)}
+              onClick={() => updateFilter({ page: queryParams.page - 1 })}
               disabled={queryParams.page === 1}
             >
               Previous
             </button>
             <button
               className={styles.paginationButton}
-              onClick={() => navigateToPage(queryParams.page + 1)}
+              onClick={() => updateFilter({ page: queryParams.page + 1 })}
               disabled={queryParams.page === meta?.totalPages}
             >
               Next
