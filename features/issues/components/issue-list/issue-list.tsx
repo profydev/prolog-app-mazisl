@@ -5,7 +5,6 @@ import { useGetIssues } from "@features/issues";
 import { IssueRow } from "./issue-row";
 import styles from "./issue-list.module.scss";
 import { IssueLevel, IssueListParams, IssueStatus } from "@api/issues.types";
-// import { useState } from "react";
 import { Select, SearchInput } from "@features/ui";
 
 import { z } from "zod";
@@ -41,8 +40,6 @@ function parseQueryParams(query: NextRouter["query"]) {
 }
 
 export function IssueList() {
-  // const [searchValue, setSearchValue] = useState<string>("");
-
   const router = useRouter();
   const queryParams = parseQueryParams(router.query);
   const issuesPage = useGetIssues(queryParams);
