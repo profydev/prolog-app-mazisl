@@ -17,7 +17,6 @@ export function useGetIssues(params: IssueListParams) {
     { keepPreviousData: true },
   );
 
-  // prefetch next page
   const queryClient = useQueryClient();
   const paramsJson = JSON.stringify(params);
 
