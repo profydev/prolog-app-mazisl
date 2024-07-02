@@ -49,14 +49,23 @@
 
 .icon {
   position: absolute;
-  right: 10px;
-  top: 30px;
+  right: 4%;
+  top: 25%;
   pointer-events: none;
   transform: scaleX(-1);
-  display: none;
+
+  @media (width <= 1024px) {
+    right: 2.5%;
+    top: 197px;
+  }
+
+  @media (width <= 720px) {
+    right: 3%;
+    top: 53%;
+  }
 
   @media (width <= 570px) {
-    top: 10px;
+    display: none;
   }
 }
 
