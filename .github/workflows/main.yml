@@ -31,7 +31,7 @@ jobs:
       - run: npm ci
       - run: npm run lint:code
       - run: npm run lint:styles
-      - run: npm run prettier
+      - run: npm run prettier -- --ignore-path .prettierignore
       - run: npm run check:types
 
   build:
