@@ -75,6 +75,14 @@ jobs:
         with:
           name: build-artifacts
           path: .next/
+
+      - name: Start Next.js server
+        run: npm start &
+        env:
+          NEXT_PUBLIC_API_BASE_URL: ${{vars.NEXT_PUBLIC_API_BASE_URL}}
+      - name: Wait for Next.js to be ready
+        run: npx wait-on http://localhost:3000
+        
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
