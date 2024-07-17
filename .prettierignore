@@ -1,0 +1,2 @@
+# Ignore the deployment preview workflow file
+.github/workflows/deployment-preview.yml
