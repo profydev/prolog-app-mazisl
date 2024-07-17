@@ -47,7 +47,7 @@ jobs:
       - name: Install vercel CLI
         run: npm install --global vercel@latest
       - name: Pull vercel environment info
-        run: vercel pull --yes --environment=preview --token=${{secrets.VERCEL_TOKEN}}
+        run: vercel pull --yes --token=${{secrets.VERCEL_TOKEN}}
       - name: Build project artifacts
         run: vercel build --token=${{secrets.VERCEL_TOKEN}}
       - name: Upload build artifacts
@@ -81,6 +81,43 @@ jobs:
   deploy-preview:
     runs-on: ubuntu-latest
     needs: e2e
+    if: github.event_name == 'pull_request'
+    outputs:
+      preview_url: ${{ steps.deploy.outputs.preview_url }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
+      - name: Deploy project artifacts to vercel
+        id: deploy
+        run: |
+          DEPLOY_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+          echo "preview_url=${DEPLOY_URL}" >> $GITHUB_ENV
+          echo "::set-output name=preview_url::${DEPLOY_URL}"
+
+  comment-preview-url:
+    runs-on: ubuntu-latest
+    needs: deploy-preview
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Comment on PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PREVIEW_URL="${{ needs.deploy-preview.outputs.preview_url }}"
+          if [ -n "$PREVIEW_URL" ]; then
+            COMMENT="Preview deployment available: $PREVIEW_URL"
+            gh pr comment ${{ github.event.pull_request.number }} --body "$COMMENT"
+          fi
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: e2e
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
     steps:
       - uses: actions/checkout@v3
       - name: Download build artifacts
