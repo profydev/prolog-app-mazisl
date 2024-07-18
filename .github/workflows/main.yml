@@ -57,7 +57,8 @@ jobs:
           name: build-artifacts
           path: |
             .next/
-            .vercel/
+            .vercel/output
+
 
   e2e:
     runs-on: ubuntu-latest
