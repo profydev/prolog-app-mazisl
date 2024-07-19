@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Image from "next/image";
 import classNames from "classnames";
 import styles from "./search-input.module.scss";
 
@@ -23,8 +22,6 @@ export const SearchInput = ({
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(false);
 
-  const searchIconWidth = 16;
-
   const inputClass = classNames(styles.input, {
     [styles.focused]: isFocused,
     [styles.filled]: searchValue.length > 0,
@@ -43,14 +40,6 @@ export const SearchInput = ({
         onFocus={handleFocus}
         onBlur={handleBlur}
         disabled={disabled}
-      />
-
-      <Image
-        className={styles.icon}
-        src="/icons/search-icon.svg"
-        alt="search icon"
-        width={searchIconWidth}
-        height={searchIconWidth}
       />
     </div>
   );
